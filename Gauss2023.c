@@ -41,8 +41,8 @@ int main(void)
 
 	*/
 	toc = clock();
-	// Output_Matrix(N, N);
-	Norm(N);
+	Output_Matrix(N, N);
+	//Norm(N);
 
 	/* Gaussial elimination for the right-hand side vector b
 
