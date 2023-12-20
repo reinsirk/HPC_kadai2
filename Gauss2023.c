@@ -42,7 +42,7 @@ int main(void)
 	*/
 	toc = clock();
 	Output_Matrix(N, N);
-	//Norm(N);
+	Norm(N);
 
 	/* Gaussial elimination for the right-hand side vector b
 
@@ -103,7 +103,7 @@ void Make_righthand_side(int n)
 	int i, j;
 	for (i = 1; i <= n; i++)
 	{
-		x[i] = 1.0;
+		x[i] = 1*(i+5)%20;
 		/*  x[i]= rand()/(double)RAND_MAX;*/
 	}
 	/*
@@ -218,10 +218,12 @@ void GaussRight(int n)
 		}
 		b[k] = (b[k] - sum) / A[k][k];
 	}
+	Output_Matrix(N, N);
 	for (k = n - 1; k > 0; k--)
 	{
 		if (PIV[k] != k)
 		{
+			//printf("%d\n",PIV[k]);
 			temp = b[k];
 			b[k] = b[PIV[k]];
 			b[PIV[k]] = temp;

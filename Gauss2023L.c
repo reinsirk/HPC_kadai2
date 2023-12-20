@@ -176,15 +176,15 @@ void GaussRight(int n)
 		}
 		b[k] = (b[k] - sum) / A[k][k];
 	}
-	for (k = n - 1; k > 0; k--)
-	{
-		if (PIV[k] != k)
-		{
-			temp = b[k];
-			b[k] = b[PIV[k]];
-			b[PIV[k]] = temp;
-		}
-	}
+	// for (k = n - 1; k > 0; k--)
+	// {
+	// 	if (PIV[k] != k)
+	// 	{
+	// 		temp = b[k];
+	// 		b[k] = b[PIV[k]];
+	// 		b[PIV[k]] = temp;
+	// 	}
+	// }
 }
 
 void Norm(int n)
