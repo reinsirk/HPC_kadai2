@@ -40,7 +40,7 @@ int main(void)
 
 	*/
 	toc = clock();
-	Norm(N);
+	//Norm(N);
 
 	/* Gaussial elimination for the right-hand side vector b
 
@@ -143,7 +143,6 @@ void GaussLeft(int n)
 			exit(1);
 		}
 		PIV[k] = pivnum;
-		#pragma omp parallel for private(j)
 		for (i = k + 1; i <= n; i++)
 		{
 			alpha = -A[i][k] / A[k][k];

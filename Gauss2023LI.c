@@ -40,7 +40,7 @@ int main(void)
 
 	*/
 	toc = clock();
-	Norm(N);
+	//Norm(N);
 
 	/* Gaussial elimination for the right-hand side vector b
 
