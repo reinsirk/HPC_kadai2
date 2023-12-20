@@ -148,9 +148,10 @@ void GaussLeft(int n)
 		pivnum = k;
 		for (i = k + 1; i <= n; i++)
 		{
-			if (piv < fabs(A[i][k]))
+			temp = fabs(A[i][k]);
+			if (piv < temp)
 			{
-				piv = fabs(A[i][k]);
+				piv = temp;
 				pivnum = i;
 			}
 		}
@@ -162,11 +163,8 @@ void GaussLeft(int n)
 				A[k][i] = A[pivnum][i];
 				A[pivnum][i] = temp;
 			}
-			temp = b[k];
-			b[k] = b[pivnum];
-			b[pivnum] = temp;
 		}
-		if (piv == 0)
+		if (piv == 0.0)
 		{
 			fputs("faild\n", stderr);
 			exit(1);
@@ -175,7 +173,7 @@ void GaussLeft(int n)
 		#pragma omp parallel for private(j, alpha)
 		for (i = k + 1; i <= n; i++)
 		{
-			alpha = -A[i][k] / A[k][k];
+			alpha = -1 * (A[i][k] / A[k][k]);
 			A[i][k] = alpha;
 			for (j = k + 1; j <= n; j++)
 			{
@@ -189,6 +187,15 @@ void GaussRight(int n)
 {
 	int k, j;
 	double sum, temp;
+	for (k = 1; k < n; k++)
+	{
+		if (PIV[k] != k)
+		{
+			temp = b[k];
+			b[k] = b[PIV[k]];
+			b[PIV[k]] = temp;
+		}
+	}
 	for (k = 2; k <= n; k++)
 	{
 		for (j = 1; j < k; j++)
@@ -204,15 +211,6 @@ void GaussRight(int n)
 			sum += A[k][j] * b[j];
 		}
 		b[k] = (b[k] - sum) / A[k][k];
-	}
-	for (k = n - 1; k > 0; k--)
-	{
-		if (PIV[k] != k)
-		{
-			temp = b[k];
-			b[k] = b[PIV[k]];
-			b[PIV[k]] = temp;
-		}
 	}
 }
 

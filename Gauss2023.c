@@ -176,9 +176,6 @@ void GaussLeft(int n)
 				A[k][i] = A[pivnum][i];
 				A[pivnum][i] = temp;
 			}
-			temp = b[k];
-			b[k] = b[pivnum];
-			b[pivnum] = temp;
 		}
 		if (piv == 0.0)
 		{
@@ -202,6 +199,15 @@ void GaussRight(int n)
 {
 	int k, j;
 	double sum, temp;
+	for (k = 1; k < n; k++)
+	{
+		if (PIV[k] != k)
+		{
+			temp = b[k];
+			b[k] = b[PIV[k]];
+			b[PIV[k]] = temp;
+		}
+	}
 	for (k = 2; k <= n; k++)
 	{
 		for (j = 1; j < k; j++)
@@ -217,17 +223,6 @@ void GaussRight(int n)
 			sum += A[k][j] * b[j];
 		}
 		b[k] = (b[k] - sum) / A[k][k];
-	}
-	Output_Matrix(N, N);
-	for (k = n - 1; k > 0; k--)
-	{
-		if (PIV[k] != k)
-		{
-			//printf("%d\n",PIV[k]);
-			temp = b[k];
-			b[k] = b[PIV[k]];
-			b[PIV[k]] = temp;
-		}
 	}
 }
 
