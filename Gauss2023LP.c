@@ -8,7 +8,7 @@
 #define N 6000
 
 double A[N + 1][N + 1], x[N + 1], b[N + 1];
-//double At[N + 1][N + 1], bt[N + 1];
+double At[N + 1][N + 1], bt[N + 1];
 int PIV[N + 1];
 
 void Make_Matrix(int n);
@@ -42,7 +42,7 @@ int main(void)
 
 	*/
 	toc = omp_get_wtime();
-	//Norm(N);
+	Norm(N);
 
 	/* Gaussial elimination for the right-hand side vector b
 
@@ -216,28 +216,26 @@ void GaussRight(int n)
 	}
 }
 
-// void Norm(int n)
-// {
-// 	double f[n + 1];
-// 	int i, j;
-// 	double sum1 = 0;
-// 	double sum2 = 0;
-// 	for (i = 1; i <= n; i++)
-// 	{
-// 		f[i] = 0;
-// 		for (j = 1; j <= n; j++)
-// 		{
-// 			f[i] += At[i][j] * b[j];
-// 		}
-// 	}
-// 	for (i = 1; i <= n; i++)
-// 	{
-// 		f[i] -= bt[i];
-// 		sum1 += f[i] * f[i];
-// 	}
-// 	for (i = 1; i <= n; i++)
-// 	{
-// 		sum2 += bt[i] * bt[i];
-// 	}
-// 	printf("ノルム: %lf\n", sqrt(sum1 / sum2));
-// }
+void Norm(int n)
+{
+	double f;
+	int i, j;
+	double sum1 = 0.0;
+	double sum2 = 0.0;
+	for (i = 1; i <= n; i++)
+	{
+		f = 0;
+		for (j = 1; j <= n; j++)
+		{
+			f += At[i][j] * b[j];
+		}
+		f -= bt[i];
+		sum1 += pow(f, 2);
+	}
+	for (i = 1; i <= n; i++)
+	{
+		sum2 += pow(bt[i], 2);
+	}
+	printf("ノルム: %lf\n", sqrt(sum1 / sum2));
+}
+

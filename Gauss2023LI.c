@@ -40,7 +40,7 @@ int main(void)
 
 	*/
 	toc = clock();
-	//Norm(N);
+	Norm(N);
 
 	/* Gaussial elimination for the right-hand side vector b
 
@@ -204,26 +204,23 @@ void GaussRight(int n)
 
 void Norm(int n)
 {
-	double f[N + 1];
+	double f;
 	int i, j;
-	double sum1 = 0;
-	double sum2 = 0;
+	double sum1 = 0.0;
+	double sum2 = 0.0;
 	for (i = 1; i <= n; i++)
 	{
-		f[i] = 0;
+		f = 0;
 		for (j = 1; j <= n; j++)
 		{
-			f[i] += At[i][j] * b[j];
+			f += At[i][j] * b[j];
 		}
+		f -= bt[i];
+		sum1 += pow(f, 2);
 	}
 	for (i = 1; i <= n; i++)
 	{
-		f[i] -= bt[i];
-		sum1 += f[i] * f[i];
-	}
-	for (i = 1; i <= n; i++)
-	{
-		sum2 += bt[i] * bt[i];
+		sum2 += pow(bt[i], 2);
 	}
 	printf("ノルム: %lf\n", sqrt(sum1 / sum2));
 }
