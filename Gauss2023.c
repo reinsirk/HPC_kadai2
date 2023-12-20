@@ -11,20 +11,23 @@
 double A[N + 1][N + 1], x[N + 1], b[N + 1];
 int PIV[N + 1];
 
-void Input_Matrix(int K);
+void Input_Matrix(int K, char* argv);
 void Make_righthand_side(int n);
 void Output_Matrix(int n, int line);
 void GaussLeft(int n);
 void GaussRight(int n);
-void Norm(int n);
 
-int main(void)
+int main(int argc, char *argv[])
 {
+	if(argc<2){
+		fprintf(stderr, "Few command line arguments!");
+		exit(1);
+	}
 	int i, j, n = N;
 	double t, GFLOPS;
 	clock_t tic, toc;
 
-	Input_Matrix(N);
+	Input_Matrix(N, argv[1]);
 	Make_righthand_side(N);
 
 	/* Output_Matrix is used for testing only  */
@@ -42,7 +45,7 @@ int main(void)
 	*/
 	toc = clock();
 	Output_Matrix(N, N);
-	Norm(N);
+	//Norm(N);
 
 	/* Gaussial elimination for the right-hand side vector b
 
@@ -58,15 +61,17 @@ int main(void)
 	printf("Gaussian Elimination  Size = %3d, Time (sec) = %.2f, GFLOPS = %.2f\n", N, t, GFLOPS);
 }
 
-void Input_Matrix(int K)
+void Input_Matrix(int K, char* argv)
 {
 	/* Only for (LINE_SIZE-1)*(FIELD_SIZE-1) */
 	char buf[BUF_SIZE];
 	int line;
 
-	FILE *fp = fopen("SparseMatrixB.csv", "r");
-	if (fp == NULL)
-		return;
+	FILE *fp = fopen(argv, "r");
+	if (fp == NULL){
+		fprintf(stderr,"Cannot open file!\n");
+		exit(1);
+	}
 
 	/*  for (line = 0; fgets(buf, BUF_SIZE, fp); line++) ;
 		if (line > LINE_SIZE) { return 2; }
@@ -103,7 +108,7 @@ void Make_righthand_side(int n)
 	int i, j;
 	for (i = 1; i <= n; i++)
 	{
-		x[i] = 1*(i+5)%20;
+		x[i] = 1.0;
 		/*  x[i]= rand()/(double)RAND_MAX;*/
 	}
 	/*
@@ -226,42 +231,3 @@ void GaussRight(int n)
 	}
 }
 
-void Norm(int n)
-{
-	Input_Matrix(n);
-	double f[N + 1];
-	double c[N + 1];
-	int i, j;
-	double sum1 = 0, sum2 = 0;
-	for (i = 1; i <= n; i++)
-	{
-		f[i] = 0;
-		for (j = 1; j <= n; j++)
-		{
-			f[i] += A[i][j] * b[j];
-		}
-	}
-	for (i = 1; i <= n; i++)
-	{
-		c[i] = 0.0;
-		for (j = 1; j <= n; j++)
-		{
-			c[i] += A[i][j] * x[j];
-		}
-	}
-	for (i = 1; i <= n; i++)
-		for (i = 1; i <= n; i++)
-		{
-			c[i] = 0;
-		}
-	c[n] = 1;
-	{
-		f[i] -= c[i];
-		sum1 += f[i] * f[i];
-	}
-	for (i = 1; i <= n; i++)
-	{
-		sum2 += c[i] * c[i];
-	}
-	printf("ノルム: %lf\n", sqrt(sum1 / sum2));
-}

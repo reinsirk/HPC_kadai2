@@ -4,7 +4,7 @@
 #include <math.h>
 #include <time.h>
 /* Kadai_2  2023.12. 8. */
-#define N 3000
+#define N 6000
 
 double A[N + 1][N + 1], x[N + 1], b[N + 1], At[N + 1][N + 1], bt[N + 1];
 int PIV[N + 1];
@@ -16,21 +16,25 @@ void GaussLeft(int n);
 void GaussRight(int n);
 void Norm(int n);
 
-int main(void)
+int main(int argc, char *argv[])
 {
-	int i, j, n = N;
+	if(argc<2){
+		fprintf(stderr, "Few command line arguments!");
+		exit(1);
+	}
+	int i, j, n = atoi(argv[1]);
 	double t, GFLOPS;
 	clock_t tic, toc;
 
-	Make_Matrix(N);
-	Make_solution(N);
+	Make_Matrix(n);
+	Make_solution(n);
 	/* Output_Matrix is used for testing only  */
 	/*	Output_Matrix( N, N );	*/
 
 	tic = clock();
 
-	GaussLeft(N);
-	GaussRight(N);
+	GaussLeft(n);
+	GaussRight(n);
 
 	/* Gaussian elimination for the matrix A
 
@@ -40,7 +44,7 @@ int main(void)
 
 	*/
 	toc = clock();
-	Norm(N);
+	Norm(n);
 
 	/* Gaussial elimination for the right-hand side vector b
 
@@ -53,7 +57,7 @@ int main(void)
 
 	t = (double)(toc - tic) / CLOCKS_PER_SEC;
 	GFLOPS = (2.0 * n) * n * n / t / 1e+9;
-	printf("Gaussian Elimination  Size = %3d, Time (sec) = %.2f, GFLOPS = %.2f\n", N, t, GFLOPS);
+	printf("Gaussian Elimination  Size = %3d, Time (sec) = %.2f, GFLOPS = %.2f\n", n, t, GFLOPS);
 }
 
 void Make_Matrix(int n)
@@ -204,5 +208,5 @@ void Norm(int n)
 	{
 		sum2 += pow(bt[i], 2);
 	}
-	printf("ノルム: %lf\n", sqrt(sum1 / sum2));
+	printf("Norm: %lf\n", sqrt(sum1 / sum2));
 }

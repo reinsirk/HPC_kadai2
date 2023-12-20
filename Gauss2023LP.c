@@ -18,21 +18,25 @@ void GaussLeft(int n);
 void GaussRight(int n);
 void Norm(int n);
 
-int main(void)
+int main(int argc, char *argv[])
 {
-	int i, j, n = N;
+	if(argc<2){
+		fprintf(stderr, "Few command line arguments!");
+		exit(1);
+	}
+	int i, j, n = atoi(argv[1]);
 	double t, GFLOPS;
 	double tic, toc;
 
-	Make_Matrix(N);
-	Make_solution(N);
+	Make_Matrix(n);
+	Make_solution(n);
 	/* Output_Matrix is used for testing only  */
 	/*	Output_Matrix( N, N );	*/
 
 	tic = omp_get_wtime();
 
-	GaussLeft(N);
-	GaussRight(N);
+	GaussLeft(n);
+	GaussRight(n);
 
 	/* Gaussian elimination for the matrix A
 
@@ -42,7 +46,7 @@ int main(void)
 
 	*/
 	toc = omp_get_wtime();
-	Norm(N);
+	Norm(n);
 
 	/* Gaussial elimination for the right-hand side vector b
 
@@ -55,7 +59,7 @@ int main(void)
 
 	t = (double)(toc - tic);
 	GFLOPS = (2.0 * n) * n * n / t / 1e+9;
-	printf("Gaussian Elimination  Size = %3d, Time (sec) = %.2f, GFLOPS = %.2f\n", N, t, GFLOPS);
+	printf("Gaussian Elimination  Size = %3d, Time (sec) = %.2f, GFLOPS = %.2f\n", n, t, GFLOPS);
 }
 
 void Make_Matrix(int n)
@@ -68,7 +72,7 @@ void Make_Matrix(int n)
 		for (j = 1; j <= n; j++)
 		{
 			A[i][j] = (double)(rand() % 65535) / 65535.0;
-			//At[i][j] = A[i][j];
+			At[i][j] = A[i][j];
 		}
 	}
 }
@@ -80,7 +84,7 @@ void Make_solution(int n)
 	for (i = 1; i <= n; i++)
 	{
 		b[i] = (double)(rand() % 65535) / 65535.0;
-		//bt[i] = b[i];
+		bt[i] = b[i];
 	}
 }
 
@@ -234,6 +238,6 @@ void Norm(int n)
 	{
 		sum2 += pow(bt[i], 2);
 	}
-	printf("ノルム: %lf\n", sqrt(sum1 / sum2));
+	printf("Norm: %lf\n", sqrt(sum1 / sum2));
 }
 
