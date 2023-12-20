@@ -41,7 +41,7 @@ int main(void)
 
 	*/
 	toc = clock();
-	//Output_Matrix(N, N);
+	// Output_Matrix(N, N);
 	Norm(N);
 
 	/* Gaussial elimination for the right-hand side vector b
@@ -124,7 +124,6 @@ void Make_righthand_side(int n)
 	}
 }
 
-
 void Output_Matrix(int n, int line)
 
 {
@@ -153,17 +152,18 @@ void Output_Matrix(int n, int line)
 void GaussLeft(int n)
 {
 	int i, j, k;
-	int piv, pivnum;
+	int pivnum;
+	double piv;
 	double temp, alpha;
 	for (k = 1; k < n; k++)
 	{
-		piv = abs(A[k][k]);
+		piv = fabs(A[k][k]);
 		pivnum = k;
 		for (i = k + 1; i <= n; i++)
 		{
-			if (piv < abs(A[i][k]))
+			if (piv < fabs(A[i][k]))
 			{
-				piv = abs(A[i][k]);
+				piv = fabs(A[i][k]);
 				pivnum = i;
 			}
 		}
@@ -178,6 +178,11 @@ void GaussLeft(int n)
 			temp = b[k];
 			b[k] = b[pivnum];
 			b[pivnum] = temp;
+		}
+		if (piv == 0)
+		{
+			fputs("faild\n", stderr);
+			exit(1);
 		}
 		PIV[k] = pivnum;
 		for (i = k + 1; i <= n; i++)
@@ -226,8 +231,8 @@ void GaussRight(int n)
 void Norm(int n)
 {
 	Input_Matrix(n);
-	double f[n + 1];
-	double c[n + 1];
+	double f[N + 1];
+	double c[N + 1];
 	int i, j;
 	double sum1 = 0, sum2 = 0;
 	for (i = 1; i <= n; i++)
@@ -247,10 +252,11 @@ void Norm(int n)
 		}
 	}
 	for (i = 1; i <= n; i++)
-	for(i=1;i<=n; i++){
-		c[i]=0;
-	}
-	c[n]=1;
+		for (i = 1; i <= n; i++)
+		{
+			c[i] = 0;
+		}
+	c[n] = 1;
 	{
 		f[i] -= c[i];
 		sum1 += f[i] * f[i];

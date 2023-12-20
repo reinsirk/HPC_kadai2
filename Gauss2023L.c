@@ -189,7 +189,7 @@ void GaussRight(int n)
 
 void Norm(int n)
 {
-	double f[n + 1];
+	double f[N + 1];
 	int i, j;
 	double sum1 = 0;
 	double sum2 = 0;
