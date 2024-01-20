@@ -238,6 +238,6 @@ void Norm(int n)
 	{
 		sum2 += pow(bt[i], 2);
 	}
-	printf("Norm: %lf\n", sqrt(sum1 / sum2));
+	printf("Norm: %2.3e\n", sqrt(sum1 / sum2));
 }
 

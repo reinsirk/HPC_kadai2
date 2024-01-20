@@ -17,6 +17,7 @@ void Output_Matrix(int n, int line);
 void GaussLeft(int n);
 void GaussRight(int n);
 
+
 int main(int argc, char *argv[])
 {
 	if(argc<2){
